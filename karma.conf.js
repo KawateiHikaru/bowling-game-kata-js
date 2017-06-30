@@ -10,11 +10,12 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine'],
+    frameworks: ['mocha'],
 
 
     // list of files / patterns to load in the browser
     files: [
+      {pattern: 'node_modules/chai/chai.js', include: true},
       'js/*.js',
       'test/*.spec.js'
     ],
@@ -22,23 +23,32 @@ module.exports = function(config) {
 
     // list of files to exclude
     exclude: [
+        'karma.conf.js'
     ],
 
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
+        'src/*.js': 'coverage'
     },
 
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: ['progress', 'junit', 'coverage'],
 
+    coverageReporter: {
+        // cf. http://gotwarlost.github.com/istanbul/public/apidocs/
+        type: 'lcov',
+        dir: 'coverage/'
+    },
 
     // web server port
     port: 9876,
+
+    runnerPort: 9100,
 
 
     // enable / disable colors in the output (reporters and logs)
@@ -65,6 +75,15 @@ module.exports = function(config) {
 
     // Concurrency level
     // how many browser should be started simultaneous
-    concurrency: Infinity
+    concurrency: Infinity,
+
+
+    plugins: [
+        'karma-phantomjs-launcher',
+        'karma-mocha',
+        'karma-junit-reporter',
+        'karma-coverage'
+    ]
+
   })
 }
