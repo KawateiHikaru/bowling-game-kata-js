@@ -27,12 +27,8 @@ describe("BowlingGame", function() {
 
 	describe("Game 1", function() {
 		it("handle gutter game", function() {
-			var game = new BowlingGame();
-			for (var i = 0; i < 20; i++) {
-				game.roll(0);
-			}
-			// console.log(game.score());
-			expect(0).to.equal(0);
+			rollMany(20,0)
+			expect(game.score()).to.equal(0);
 		});
 	});
 
