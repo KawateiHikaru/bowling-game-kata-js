@@ -15,84 +15,17 @@ describe("BowlingGame", function() {
 		}
 	}
 
-	function rollSpare() {
-		game.roll(5);
-		game.roll(5);
+	function rollSpare(v) {
+		v = v || 5;
+		game.roll(v);
+		game.roll(10 - v);
 	}
 
 	function rollStrike() {
 		game.roll(10);
 	}
 
-
-	describe("Game 1", function() {
-		it("handle gutter game", function() {
-			rollMany(20,0)
-			expect(game.score()).to.equal(0);
-		});
-	});
-
-	describe("Game 2", function() {
-		it("handle gutter game", function() {
-			rollMany(20, 0);
-			expect(game.score()).to.equal(0);
-		});
-
-		it("should handle all ones", function() {
-			rollMany(20, 1);
-			expect(game.score()).to.equal(20);
-		});
-	});
-
-	describe("Game 3", function() {
-		it("handle gutter game", function() {
-			rollMany(20, 0);
-			expect(game.score()).to.equal(0);
-		});
-
-		it("should handle all ones", function() {
-			rollMany(20, 1);
-			expect(game.score()).to.equal(20);
-		});
-
-		it("should handle one spare", function() {
-			rollSpare();
-			game.roll(3);
-			rollMany(17, 0);
-			expect(game.score()).to.equal(16);
-		});
-	});
-
-
-	describe("Game 4", function() {
-
-		it("should handle gutter game", function() {
-			rollMany(20, 0);
-			expect(game.score()).to.equal(0);
-		});
-
-		it("should handle all ones", function() {
-			rollMany(20, 1);
-			expect(game.score()).to.equal(20);
-		});
-
-		it("should handle one spare", function() {
-			rollSpare();
-			game.roll(3);
-			rollMany(17, 0);
-			expect(game.score()).to.equal(16);
-		});
-
-		it("should handle one strike", function() {
-			rollStrike();
-			game.roll(3);
-			game.roll(4);
-			rollMany(16, 0);
-			expect(game.score()).to.equal(24);
-		});
-	});
-
-	describe("Game 5", function() {
+	describe("score()", function() {
 
 		it("should handle gutter game", function() {
 			rollMany(20, 0);
@@ -123,5 +56,36 @@ describe("BowlingGame", function() {
 			rollMany(12, 10);
 			expect(game.score()).to.equal(300);
 		});
+
+		it("should handle no miss", function() {
+			rollSpare(5);
+			rollSpare(8);
+			rollSpare(6);
+			rollSpare(7);
+			rollSpare(7);
+			rollSpare(9);
+			rollSpare(5);
+			rollSpare(8);
+			rollSpare(9);
+			rollSpare(9);
+			rollStrike();
+			expect(game.score()).to.equal(178);
+		});
+
+		it("should handle strike-spare", function() {
+			rollStrike();
+			rollSpare(9);
+			rollStrike();
+			rollSpare(7);
+			rollStrike();
+			rollSpare(2);
+			rollStrike();
+			rollSpare(5);
+			rollStrike();
+			rollSpare(1);
+			rollStrike();
+			expect(game.score()).to.equal(200);
+		});
+
 	});
 });	
